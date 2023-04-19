@@ -92,7 +92,22 @@ class ContactsApp extends Contacts{
                 })
             super.add(this.contact)
             this.createContactList()
+            this.handleLocalStorage()
         })
+    }
+    setCookie(name,value){
+        let expires = new Date()
+        expires.setDate(expires.getDate() + 10)
+        document.cookie = `${name} = ${value}; path=/; expires=${expires}`
+    }
+    handleLocalStorage(){
+        if (!this.data.length){
+            return localStorage.removeItem('contacts')
+        }
+        localStorage.setItem("contacts", JSON.stringify(this.data))
+
+        
+        this.setCookie('storageExpiration', 'true')
     }
     createContactList(){
         const contacts = document.querySelector('.contacts__list')
@@ -128,8 +143,11 @@ class ContactsApp extends Contacts{
             let newEmail = prompt('Введите email')
             email.innerHTML = newEmail 
             let newPhone = prompt('Введите телефон')
-            phone.innerHTML = newPhone 
+            phone.innerHTML = newPhone
+             
         })
+        this.handleLocalStorage()
+        
 
         const removeButton = document.createElement('button')
         removeButton.classList.add('list__removeButton', 'button')
@@ -139,6 +157,7 @@ class ContactsApp extends Contacts{
             age.innerHTML = ''
             phone.innerHTML = ''
             email.innerHTML = ''
+            this.handleLocalStorage() 
         })
 
         buttonContainer.className = "buttonContainer"
