@@ -109,6 +109,16 @@ class ContactsApp extends Contacts{
         
         this.setCookie('storageExpiration', 'true')
     }
+
+    getData() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            .then(data => {
+                this.data = [... this.data, ... data]
+                this.handleLocalStrogare()
+            })
+    }
+
     createContactList(){
         const contacts = document.querySelector('.contacts__list')
         const list = document.createElement('div')
@@ -173,3 +183,8 @@ class ContactsApp extends Contacts{
 
 const contactsApp = new ContactsApp()
 console.log(contactsApp)
+
+
+
+
+
